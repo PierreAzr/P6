@@ -1,0 +1,26 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+      {% if sendmail %}
+        <div class="alert alert-danger">
+          un email a etait envoyer vous avec 48h avant que le lien.....
+          <a href="{{sendmail}}">change pass</a>
+
+        </div>
+        {% else %}
+
+<div class="container">
+  <div class="row justify-content-center">
+    <div class="col-md-4">
+{{ form_start(form) }}
+    {{ form_row(form.email) }}
+    <button type="submit" class="btn btn-success">Envoyer</button>
+{{ form_end(form) }}
+
+</div>
+</div>
+</div>
+
+  {% endif %}
+
+{% endblock %}

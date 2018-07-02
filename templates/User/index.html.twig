@@ -1,0 +1,22 @@
+{% extends 'base.html.twig' %}
+
+
+
+{% block body %}
+<div class="row justify-content-center">
+  <div class="col">
+    <h1>Utilisateur</h1>
+    <p>{{user.username}}</p>
+    <br>
+    {% if is_granted('ROLE_ADMIN') %}
+        <h2>Administation</h2>
+        <a href="{{ path('admin')}}">Accéder a l'administration</a>
+    {% endif %}
+    <h2>Paramètres</h2>
+    <a href="{{ path('user_edit')}}">Modifier son profil</a><br>
+    <a href="{{ path('user_change_password')}}">Changer de mot de passe</a><br>
+    <a href="{{ path('user_remove')}}">Supprimer le compte</a>
+  </div>
+</div>
+
+{% endblock %}
