@@ -1,6 +1,8 @@
 <?php
 
 namespace App\Entity;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 //use Doctrine\Common\Collections\ArrayCollection;
 use Symfony\Component\Security\Core\User\UserInterface;
@@ -63,8 +65,20 @@ class User implements UserInterface, \Serializable
      */
     private $plainpassword;
 
+    /**
+     * @ORM\OneToMany(targetEntity="App\Entity\Advert", mappedBy="usercreate")
+     */
+    private $advertscreated;
+
+    /**
+     * @ORM\ManyToMany(targetEntity="App\Entity\Advert", mappedBy="participant")
+     */
+    private $adverts;
+
     public function __construct() {
     $this->roles = array('ROLE_USER');
+    $this->advertscreated = new ArrayCollection();
+    $this->adverts = new ArrayCollection();
     }
 
     public function getId(): int
@@ -185,4 +199,64 @@ public function setPlainpasswordValue()
 
     $this->plainpassword = null;
 }
+
+/**
+ * @return Collection|Advert[]
+ */
+public function getAdvertscreated(): Collection
+{
+    return $this->advertscreated;
+}
+
+public function addAdvertscreated(Advert $advertscreated): self
+{
+    if (!$this->advertscreated->contains($advertscreated)) {
+        $this->advertscreated[] = $advertscreated;
+        $advertscreated->setUsercreate($this);
+    }
+
+    return $this;
+}
+
+public function removeAdvertscreated(Advert $advertscreated): self
+{
+    if ($this->advertscreated->contains($advertscreated)) {
+        $this->advertscreated->removeElement($advertscreated);
+        // set the owning side to null (unless already changed)
+        if ($advertscreated->getUsercreate() === $this) {
+            $advertscreated->setUsercreate(null);
+        }
+    }
+
+    return $this;
+}
+
+/**
+ * @return Collection|Advert[]
+ */
+public function getAdverts(): Collection
+{
+    return $this->adverts;
+}
+
+public function addAdvert(Advert $advert): self
+{
+    if (!$this->adverts->contains($advert)) {
+        $this->adverts[] = $advert;
+        $advert->addParticipant($this);
+    }
+
+    return $this;
+}
+
+public function removeAdvert(Advert $advert): self
+{
+    if ($this->adverts->contains($advert)) {
+        $this->adverts->removeElement($advert);
+        $advert->removeParticipant($this);
+    }
+
+    return $this;
+}
+
 }
