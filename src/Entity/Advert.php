@@ -36,10 +36,10 @@ class Advert
     /**
      * @ORM\Column(type="float")
      */
-    private $lgt;
+    private $lng;
 
     /**
-     * @ORM\Column(type="string", length=255)
+     * @ORM\Column(type="time", length=255)
      */
     private $time;
 
@@ -49,7 +49,7 @@ class Advert
     private $level;
 
     /**
-     * @ORM\Column(type="datetime")
+     * @ORM\Column(type="date")
      */
     private $publicationdate ;
 
@@ -72,7 +72,6 @@ class Advert
     public function __construct()
     {
       $this->publicationdate = new \Datetime();
-      $this->appointmentdate = new \Datetime();
       $this->participant = new ArrayCollection();
     }
 
@@ -117,24 +116,24 @@ class Advert
         return $this;
     }
 
-    public function getLgt(): ?float
+    public function getLng(): ?float
     {
-        return $this->lgt;
+        return $this->lng;
     }
 
-    public function setLgt(float $lgt): self
+    public function setLng(float $lng): self
     {
-        $this->lgt = $lgt;
+        $this->lng = $lng;
 
         return $this;
     }
 
-    public function getTime(): ?string
+    public function getTime(): ?\DateTimeInterface
     {
         return $this->time;
     }
 
-    public function setTime(string $time): self
+    public function setTime(\DateTimeInterface $time): self
     {
         $this->time = $time;
 

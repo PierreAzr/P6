@@ -3,48 +3,74 @@
 {% block title %}Advert{% endblock %}
 
 {% block body %}
+
     <h1>Advert</h1>
+<div class="">
+  publier {{advert.publicationdate|date('d-m-Y')}}
+</div>
+<div class="">
+  A {{ advert.city }} le {{advert.appointmentdate|date('d-m-Y')}} pendant {{ advert.time|date('H:i') }}
+</div>
 
-    <table class="table">
-        <tbody>
-            <tr>
-                <th>Id</th>
-                <td>{{ advert.id }}</td>
-            </tr>
-            <tr>
-                <th>Content</th>
-                <td>{{ advert.content }}</td>
-            </tr>
-            <tr>
-                <th>City</th>
-                <td>{{ advert.city }}</td>
-            </tr>
-            <tr>
-                <th>Lat</th>
-                <td>{{ advert.lat }}</td>
-            </tr>
-            <tr>
-                <th>Lgt</th>
-                <td>{{ advert.lgt }}</td>
-            </tr>
-            <tr>
-                <th>Time</th>
-                <td>{{ advert.time }}</td>
-            </tr>
-            <tr>
-                <th>Level</th>
-                <td>{{ advert.level }}</td>
-            </tr>
-            <tr>
-                <th>User</th>
-                <td>{{ advert.usercreate.username }}</td>
-            </tr>
-        </tbody>
-    </table>
+<div class="">
+  {{ advert.content }}
+</div>
+<div class="">
+  {{ advert.usercreate.username }}
+</div>
 
-    <a href="{{ path('advert_index') }}">back to list</a>
+<div class="">
+  {% for participant in advert.participant %}
+  {{participant.username}}
+  {% endfor %}
+</div>
+<br>
+{% if is_granted('ROLE_USER') %}
 
-    <a href="{{ path('advert_edit', {'id': advert.id}) }}">edit</a>
+    <form class="" action="index.html" method="post">
+        <button type="submit" class="btn btn-primary" name="button">Participer</button>
+    </form>
 
-    {{ include('advert/_delete_form.html.twig') }}
+{% else %}
+    Connexion requise pour participer
+{% endif %}
+
+<br>
+<br>
+
+    <!-- <a href="{{ path('advert_index') }}">back to list</a> -->
+<br>
+    <!-- <a href="{#{ path('advert_edit', {'id': advert.id}) }#}">edit</a> -->
+<br>
+
+    <!-- <button type="button" onclick="form(1)" name="button">form1</button>
+    <div class="form" form id="form1"></div>
+    <button type="button" onclick="form(2)" name="button">form2</button>
+    <div class="form" form id="form2"></div>
+
+    <script type="text/javascript">
+    function Form(e) {
+      //Attention les espace et les retour a la ligne compte
+      //les balise de debut et de fin doive ce toucher pour que inner = 0
+      var inner = document.getElementById('form'+e).innerHTML.length;
+      if (inner == 0) {
+        //enleve tous les formulaires afficher
+        var els = document.getElementsByClassName('form')
+          Array.prototype.forEach.call(els, function(el) {
+            el.innerHTML = "";
+              });
+        //affiche le formulaire souhaiter
+        document.getElementById('form'+e).innerHTML =
+        '<form class="" action="index.html" method="post">'
+        +'<input type="text" name="" value="commantaire">'
+        +'</form>'
+        ;
+      }else {
+        //enleve le formulaire souhaiter
+        document.getElementById('form'+e).innerHTML = "";
+      }
+    }
+    </script> -->
+
+    {#{ include('advert/_delete_form.html.twig') }#}
 {% endblock %}

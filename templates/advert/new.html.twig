@@ -2,10 +2,111 @@
 
 {% block title %}New Advert{% endblock %}
 
+{% block stylesheets %}
+  <style>
+      #map {  bottom:0; width:100%; }
+  </style>
+{% endblock %}
+
 {% block body %}
     <h1>Create new Advert</h1>
+<div class="container">
 
-    {{ include('advert/_form.html.twig') }}
 
+  {{ form_start(form) }}
+  <div class="row">
+    <div id="datepicker" class="col-sm-6">
+        {{ form_label(form.date)}}
+        {{ form_widget(form.date)}}
+    </div>
+    <div class="col-sm-6">
+      {{ form_label(form.hour)}}
+      {{ form_widget(form.hour)}}
+    </div>
+  </div>
+
+  <div id="error" style="color:red;">
+
+  </div>
+  <div id='map' style='width: 400px; height: 300px;'></div>
+
+      {{ form_widget(form) }}
+      <button class="btn" onclick="valider()">{{ button_label|default('Save') }}</button>
+  {{ form_end(form) }}
+
+<br>
+<h1>verif recapatach a ajouter </h1>
+  <br>
     <a href="{{ path('advert_index') }}">back to list</a>
+</div>
+
+
+
+<!-- On charge la bibliothèque datepicker  -->
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.7.1/js/bootstrap-datepicker.min.js"></script>
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.7.1/locales/bootstrap-datepicker.fr.min.js"></script>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.7.1/css/bootstrap-datepicker3.css"/>
+
+<script type="text/javascript">
+$(document).ready(function() {
+var todayDate = new Date().getDate();
+
+//mise en place de datapicker
+$("#advert_date").datepicker({
+format: "dd/mm/yyyy",
+maxDate: new Date(new Date().setDate(todayDate + 30)),
+startDate: "today",
+language: "fr",
+weekStart: 1,
+});
+});
+</script>
+
+    <!-- MAPBOX -->
+    <script src='https://api.mapbox.com/mapbox-gl-js/v0.46.0/mapbox-gl.js'></script>
+    <link href='https://api.mapbox.com/mapbox-gl-js/v0.46.0/mapbox-gl.css' rel='stylesheet' />
+
+    <!-- MAPBOX GEOCODER -->
+    <script src='https://api.mapbox.com/mapbox-gl-js/plugins/mapbox-gl-geocoder/v2.2.0/mapbox-gl-geocoder.min.js'></script>
+    <link rel='stylesheet' href='https://api.mapbox.com/mapbox-gl-js/plugins/mapbox-gl-geocoder/v2.2.0/mapbox-gl-geocoder.css' type='text/css' />
+
+        <script>
+        mapboxgl.accessToken = '{{mapbox_token}}';
+        var map = new mapboxgl.Map({
+        container: 'map',
+        center: [2.35, 46.11],
+        zoom: 4,
+        style: 'mapbox://styles/mapbox/streets-v10'
+        });
+        map.addControl(new MapboxGeocoder({
+            accessToken: mapboxgl.accessToken,
+            // limit results to rance
+            country: 'fr',
+            language: 'fr',
+
+        }));
+
+        var marker = new mapboxgl.Marker();
+        map.on('click', function (e) {
+          marker.setLngLat([e.lngLat.lng, e.lngLat.lat]).addTo(map);
+          // document.getElementById('advert_ltg').value = e.lngLat.lng;
+          // document.getElementById('advert_lat').innerHTML = e.lngLat.lat;
+          document.getElementById('advert_lat').setAttribute('value', e.lngLat.lat);
+          document.getElementById('advert_lng').setAttribute('value', e.lngLat.lng);
+              //  $.ajax({url: "https://api-adresse.data.gouv.fr/reverse/?lon=2.37&lat=48.357",
+              //   success: function(result){
+              //       $("#div1").html(result);
+              //       console.log(result);
+              //   }});
+
+         });
+
+         function valider() {
+           if (!document.getElementById('advert_lng').value) {
+             document.getElementById('error').innerHTML = "Vous devez choisir un lieux en cliquant sur la carte";
+           }
+         }
+        </script>
+
+
 {% endblock %}

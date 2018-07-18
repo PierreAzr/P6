@@ -19,6 +19,43 @@ class AdvertRepository extends ServiceEntityRepository
         parent::__construct($registry, Advert::class);
     }
 
+    public function findByDate()
+    {
+      $value = new \DateTime();
+        return $this->createQueryBuilder('a')
+            ->andWhere('a.appointmentdate >= :val')
+            ->setParameter('val', $value)
+            ->orderBy('a.appointmentdate', 'ASC')
+            ->setMaxResults(10)
+            ->getQuery()
+            ->getResult()
+        ;
+    }
+
+    public function findByCity()
+    {
+      $value = new \DateTime();
+        return $this->createQueryBuilder('a')
+            ->andWhere('a.appointmentdate >= :val')
+            ->setParameter('val', $value)
+            ->select('a.city, COUNT(a.city)')
+            ->groupBy('a.city')
+            ->getQuery()
+            ->getArrayResult();
+        ;
+    }
+
+    public function findBycityshow($value)
+    {
+        return $this->createQueryBuilder('a')
+            ->andWhere('a.city = :val')
+            ->setParameter('val', $value)
+            ->orderBy('a.appointmentdate', 'ASC')
+            ->setMaxResults(10)
+            ->getQuery()
+            ->getResult()
+        ;
+    }
 //    /**
 //     * @return Advert[] Returns an array of Advert objects
 //     */

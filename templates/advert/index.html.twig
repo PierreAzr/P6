@@ -5,41 +5,33 @@
 {% block body %}
     <h1>Advert index</h1>
 
-    <table class="table">
-        <thead>
-            <tr>
-                <th>Id</th>
-                <th>Content</th>
-                <th>City</th>
-                <th>Lat</th>
-                <th>Lgt</th>
-                <th>Time</th>
-                <th>Level</th>
-                <th>actions</th>
-            </tr>
-        </thead>
-        <tbody>
-        {% for advert in adverts %}
-            <tr>
-                <td>{{ advert.id }}</td>
-                <td>{{ advert.content }}</td>
-                <td>{{ advert.city }}</td>
-                <td>{{ advert.lat }}</td>
-                <td>{{ advert.lgt }}</td>
-                <td>{{ advert.time }}</td>
-                <td>{{ advert.level }}</td>
-                <td>
-                    <a href="{{ path('advert_show', {'id': advert.id}) }}">show</a>
-                    <a href="{{ path('advert_edit', {'id': advert.id}) }}">edit</a>
-                </td>
-            </tr>
-        {% else %}
-            <tr>
-                <td colspan="8">no records found</td>
-            </tr>
-        {% endfor %}
-        </tbody>
-    </table>
+<div class="row">
+  <div class="col-sm-4">
+{% for cit in city %}
+<a href="{#{ path('advert_city', {'city': cit.city}) }#}">{{cit.city}}({{cit.1}})</a>
+<br>
+{% endfor %}
+  </div>
+  <div class="col-sm-8">
+    {% for advert in adverts %}
+    <div class="card" style="">
+    <div class="card-body">
+    <h5 class="card-title">{{ advert.city }} {{ advert.appointmentdate|date('d-m') }} </h5>
+    <h6 class="card-subtitle mb-2 text-muted">Niveau: {{ advert.level }}  Durée: {{ advert.time|date('H:i')}}</h6>
+    <p class="card-text">{{ advert.content }}</p>
+    <a href="{{ path('advert_show', {'id': advert.id}) }}" class="card-link">Voir</a>
+    </div>
+    </div>
+    <br>
+    {% else %}
+        <tr>
+            <td colspan="8">no records found</td>
+        </tr>
+    {% endfor %}
+  </div>
+</div>
+
+
 
     <a href="{{ path('advert_new') }}">Create new</a>
 {% endblock %}
