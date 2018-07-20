@@ -18,16 +18,18 @@ class UserType extends AbstractType
     {
         $builder
             ->add('email', EmailType::class)
-            ->add('username', TextType::class)
+            ->add('username', TextType::class, array(
+              'label' => 'Pseudo'
+            ))
             ->add('password', RepeatedType::class, array(
                 'type' => PasswordType::class,
-                'first_options'  => array('label' => 'Password'),
-                'second_options' => array('label' => 'Repeat Password'),
+                'first_options'  => array('label' => 'Mot de passe'),
+                'second_options' => array('label' => 'Répéter mot de passe'),
             ))
             ->add('agree', CheckboxType::class, array(
-    'label'    => 'j\'ai lu et j\'accepte les conditions générales d\'utilisation',
-    'required' => true,
-));
+                'label'    => 'j\'ai lu et j\'accepte les conditions générales d\'utilisation',
+                'required' => true,
+            ));
         ;
     }
 

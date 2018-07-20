@@ -3,35 +3,143 @@
 {% block title %}Advert index{% endblock %}
 
 {% block body %}
-    <h1>Advert index</h1>
-
-<div class="row">
-  <div class="col-sm-4">
-{% for cit in city %}
-<a href="{#{ path('advert_city', {'city': cit.city}) }#}">{{cit.city}}({{cit.1}})</a>
 <br>
-{% endfor %}
-  </div>
-  <div class="col-sm-8">
-    {% for advert in adverts %}
-    <div class="card" style="">
-    <div class="card-body">
-    <h5 class="card-title">{{ advert.city }} {{ advert.appointmentdate|date('d-m') }} </h5>
-    <h6 class="card-subtitle mb-2 text-muted">Niveau: {{ advert.level }}  Durée: {{ advert.time|date('H:i')}}</h6>
-    <p class="card-text">{{ advert.content }}</p>
-    <a href="{{ path('advert_show', {'id': advert.id}) }}" class="card-link">Voir</a>
+  <br>
+    <h1 class="tabstep font-weight-bold text-center pl">Liste des Annonces</h1>
+    <div class="col-xs-12 col-sm-10 offset-sm-1 col-lg-9 offset-lg-3">
+    <div class="row justify-content-center">
+      {{ form_start(form, {'attr': {'class': 'form-row autoinput'}}) }}
+        {{ form_errors(form) }}
+      <div class="col-xs-6 col-sm-6">
+          {{ form_widget(form.city, {
+            'attr': {
+              'data-id': 'city',
+              'data-url': path('autocomplete')
+              }
+            })
+          }}
+      </div>
+          <div class="col-xs-6 col-sm-6">
+            {{ form_widget(form.submit, {'label': 'Rechercher', 'attr': {'class': 'btn btn-info'}}) }}
+          </div>
+          {{ form_end(form) }}
     </div>
+</div>
+<br>
+<br>
+  <div class="row">
+    <div class="col-sm-3 col-lg-3">
+      <div class="d-none d-lg-block d-xl-block">
+      <div class="card" style="">
+      <div class="card-body">
+      <div class="card-title">
+        <h2 class="text-info font-weight-bold"><strong>Ville</strong></h2>
+        </div>
+
+        {% for city in allcity %}
+        <p>
+          <a class="text-info font-weight-bold" href="{{ path('advert_index', {'city': city.city}) }}">
+            {{city.city}}({{city.1}})
+          </a>
+        </p>
+    {% endfor %}
     </div>
     <br>
-    {% else %}
-        <tr>
-            <td colspan="8">no records found</td>
-        </tr>
-    {% endfor %}
+    <br>
+  </div>
   </div>
 </div>
 
 
 
-    <a href="{{ path('advert_new') }}">Create new</a>
+  <div class="col-xs-12 col-sm-10  col-lg-9 ">
+    {% for advert in adverts %}
+<a href="{{ path('advert_show', {'id': advert.id}) }}" class="text-info cardhover">
+    <div class="card" style="">
+    <div class="card-body">
+    <div class="card-title">
+      <div class="row">
+        <div class="col-xs-6 col-sm-6 text-left">
+          <h2><i class="fas fa-chevron-right"> </i> <strong class="font-weight-bold">{{ advert.city }}</strong></h2>
+          <p class="font-weight-bold"><i class="far fa-calendar-alt"></i>
+          {{ advert.appointmentdate|date('d/m') }}
+          <i class="far fa-clock"></i>
+          {{ advert.appointmentdate|date('H')}}H{{ advert.appointmentdate|date('i')}}
+          </p>
+        </div>
+        <div class="col-xs-6 col-sm-6 text-right">
+          <p><i class="far fa-hourglass"> Durée:</i>
+            {% if advert.time|date('H') == '00' %}
+                {{ advert.time|date('i')}}min</p>
+            {% else %}
+                {{ advert.time|date('H')}}H{{ advert.time|date('i')}}
+            {% endif %}
+          </p>
+          <p><i class="fas fa-level-up-alt"></i> Niveau:
+          {{ advert.level }}</p>
+        </div>
+      </div>
+      </div>
+    </div>
+    <div class="card-text text-muted">
+      <div class="col-sm-10 offset-sm-1">
+        <p>{{ advert.content }}</p>
+      </div>
+    </div>
+    </div>
+</a>
+    <br>
+    {% else %}
+      <h2>Aucune annonce trouvée</h2>
+    {% endfor %}
+
+      <div class="text-center">
+        <ul class="pagination justify-content-center">
+          {# On utilise la fonction range(a, b) qui crée un tableau de valeurs entre a et b #}
+          {% for p in range(1, nbPages) %}
+            <li class="page-item {% if p == page %}active{% endif %}" >
+            <a class="page-link" href="{{ path('advert_index', {'page': p,'city': city}) }}">{{ p }}</a>
+            </li>
+          {% endfor %}
+        </ul>
+      </div>
+  </div>
+</div>
+
+    <script type="text/javascript">
+  $("input[data-id=city]").autocomplete({
+      source: function (request, response) {
+          var city = $("input[data-id=city]").val();
+          var objData = 'city=' + city;
+          var url = $(this.element).attr('data-url');
+          $.ajax({
+              url: url,
+              dataType: "json",
+              data : objData,
+              type: 'POST',
+              success: function (data) {
+                  response($.map(data, function (ad) {
+                      return {
+                      label: ad.city
+                      }
+                  }));
+              },
+              error: function (jqXHR, textStatus, errorThrown) {
+                  console.log(textStatus, errorThrown);
+              }
+          });
+      }
+    })
+    //Affichage et récupération de la valeur sélectionnée
+    $("input[data-id=city]").on('autocompleteselect',function(event, ui) {
+      event.preventDefault();
+        var contact = ui.item.label;
+            id = ui.item.value;
+        console.log('Event: ', event);
+        console.log('UI :', ui.item);
+        $(event.currentTarget).val(contact);
+
+    });
+
+</script>
 {% endblock %}

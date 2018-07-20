@@ -4,42 +4,102 @@
 
 {% block stylesheets %}
   <style>
-      #map {  bottom:0; width:100%; }
+      /*#map {  bottom:0; width:100%; }*/
   </style>
 {% endblock %}
 
 {% block body %}
-    <h1>Create new Advert</h1>
-<div class="container">
-
-
+    <br>
+      <br>
+    <h3 class="tabstep font-weight-bold text-center">Ajouter une annonce</h3>
+      <br>
+      <br>
   {{ form_start(form) }}
-  <div class="row">
-    <div id="datepicker" class="col-sm-6">
-        {{ form_label(form.date)}}
-        {{ form_widget(form.date)}}
-    </div>
-    <div class="col-sm-6">
-      {{ form_label(form.hour)}}
-      {{ form_widget(form.hour)}}
-    </div>
+  <div class="step">
+    <h3 class="tabstep">Etape 1 : Indiquez la date et l'heure</h3>
+        <div class="form-group ">
+            <div class="col-md-12">
+              <div class="row">
+                <div class="timecenter">
+                  <div id="datepicker"></div>
+                  {{ form_widget(form.date) }}
+                </div>
+                <div class="timecenter">
+                  <div class="time text-center">
+                    <i class="far fa-clock fa-3x"><p></p></i>
+                    {#{ form_label(form.hour)}#}
+                    {{ form_widget(form.hour)}}
+
+                  </div>
+                </div>
+              </div>
+            </div>
+        </div>
   </div>
 
-  <div id="error" style="color:red;">
-
+  <div class="step">
+    <h3 class="tabstep">Etape 2 : Indiquez le lieux</h3>
+        <div class="form-group">
+            <div class="col-md-12">
+              <div id="error" style="color:red;"></div>
+              <div id='map' class="center-block"></div>
+            </div>
+        </div>
   </div>
-  <div id='map' style='width: 400px; height: 300px;'></div>
+
+  <div class="step">
+    <h3 class="tabstep">Etape 3 : Indiquez la durée et le niveaux</h3>
+        <div class="form-group">
+            <div class="col-md-12">
+              <div class="row">
+                <div class="col-md-6">
+                  <div class="time text-center">
+                    <i class="far fa-hourglass fa-2x"><p></p></i>
+                    {{ form_widget(form.time)}}
+                  </div>
+                  </div>
+                <div class="col-md-6">
+                  <div class="time text-center">
+                    <i class="fas fa-level-up-alt fa-2x"><p></p></i>
+                    {{ form_widget(form.level)}}
+                  </div>
+                </div>
+              </div>
+            </div>
+        </div>
+  </div>
+  <div class="step">
+    <h3 class="tabstep">Etape 4 : Informations complementaires</h3>
+        <div class="form-group">
+            <div class="col-md-12 timecenter">
+              <div class="contentcom">
+                <div class="">
+                  <h3>Exemple</h3>
+                  <ul>
+                   <li>Si vous voulez passer par une foret (VTT)</li>
+                   <li>Vous avez une destination ou un objectif presis</li>
+                   <li>Laiser tous ce qui pourez completé l'annonce</li>
+                 </ul>
+
+                </div>
+              </div>
+
+
+            {{ form_widget(form.content)}}
+            </div>
+        </div>
+  </div>
 
       {{ form_widget(form) }}
-      <button class="btn" onclick="valider()">{{ button_label|default('Save') }}</button>
+      <br>
+      <div class="col-md-12 timecenter">
+      <div class="text-center">
+        <button class="btn btn-outline-primary center" onclick="valider()">{{ button_label|default('Envoyer') }}</button>
+      </div>
+    </div>
   {{ form_end(form) }}
-
 <br>
-<h1>verif recapatach a ajouter </h1>
-  <br>
-    <a href="{{ path('advert_index') }}">back to list</a>
-</div>
-
+<br>
 
 
 <!-- On charge la bibliothèque datepicker  -->
@@ -49,17 +109,20 @@
 
 <script type="text/javascript">
 $(document).ready(function() {
-var todayDate = new Date().getDate();
 
-//mise en place de datapicker
-$("#advert_date").datepicker({
-format: "dd/mm/yyyy",
-maxDate: new Date(new Date().setDate(todayDate + 30)),
-startDate: "today",
-language: "fr",
-weekStart: 1,
-});
-});
+
+  $("#datepicker").datepicker({
+  format: "dd/mm/yyyy",
+  startDate: "today",
+  language: "fr",
+  weekStart: 1,
+  });
+
+  $('#datepicker').on('changeDate', function() {
+    $('#advert_date').val($('#datepicker').datepicker('getFormattedDate'));
+  });
+
+ });
 </script>
 
     <!-- MAPBOX -->
@@ -75,7 +138,7 @@ weekStart: 1,
         var map = new mapboxgl.Map({
         container: 'map',
         center: [2.35, 46.11],
-        zoom: 4,
+        zoom: 5,
         style: 'mapbox://styles/mapbox/streets-v10'
         });
         map.addControl(new MapboxGeocoder({

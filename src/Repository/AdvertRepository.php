@@ -5,6 +5,7 @@ namespace App\Repository;
 use App\Entity\Advert;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Symfony\Bridge\Doctrine\RegistryInterface;
+use Doctrine\ORM\Tools\Pagination\Paginator;
 
 /**
  * @method Advert|null find($id, $lockMode = null, $lockVersion = null)
@@ -19,20 +20,26 @@ class AdvertRepository extends ServiceEntityRepository
         parent::__construct($registry, Advert::class);
     }
 
-    public function findByDate()
+    public function findByDate($page, $nbPerPage)
     {
       $value = new \DateTime();
-        return $this->createQueryBuilder('a')
+        $qb = $this->createQueryBuilder('a')
             ->andWhere('a.appointmentdate >= :val')
             ->setParameter('val', $value)
             ->orderBy('a.appointmentdate', 'ASC')
-            ->setMaxResults(10)
-            ->getQuery()
-            ->getResult()
-        ;
+            ;
+            $qb
+            // On définit l'annonce à partir de laquelle commencer la liste
+            ->setFirstResult(($page-1) * $nbPerPage)
+            // Ainsi que le nombre d'annonce à afficher sur une page
+            ->setMaxResults($nbPerPage)
+            ;
+
+            // On retourne l'objet Paginator correspondant à la requête construite
+            return new Paginator($qb, true);
     }
 
-    public function findByCity()
+    public function AllCity()
     {
       $value = new \DateTime();
         return $this->createQueryBuilder('a')
@@ -40,22 +47,58 @@ class AdvertRepository extends ServiceEntityRepository
             ->setParameter('val', $value)
             ->select('a.city, COUNT(a.city)')
             ->groupBy('a.city')
+            ->orderBy('a.city', 'ASC')
+            //->orderBy('COUNT(a.city)', 'DESC')
             ->getQuery()
             ->getArrayResult();
         ;
     }
 
-    public function findBycityshow($value)
+    public function findByCity($city, $page, $nbPerPage)
     {
-        return $this->createQueryBuilder('a')
+        $qb = $this->createQueryBuilder('a')
             ->andWhere('a.city = :val')
-            ->setParameter('val', $value)
+            ->setParameter('val', $city)
             ->orderBy('a.appointmentdate', 'ASC')
-            ->setMaxResults(10)
-            ->getQuery()
-            ->getResult()
-        ;
+            ;
+
+            $qb
+            ->setFirstResult(($page-1) * $nbPerPage)
+            ->setMaxResults($nbPerPage)
+            ;
+
+            // On retourne l'objet Paginator correspondant à la requête construite
+            return new Paginator($qb, true);
     }
+
+    // public function findCity($value)
+    // {
+    //     return $this->createQueryBuilder('a')
+    //         ->andWhere('a.city = :val')
+    //         ->setParameter('val', $value)
+    //         ->orderBy('a.city', 'ASC')
+    //         ->setMaxResults(10)
+    //         ->getQuery()
+    //         ->getResult()
+    //     ;
+    // }
+
+    public function findCity($city)
+    {
+      $qb = $this->createQueryBuilder('e');
+      $qb->select('DISTINCT  e.city')
+         ->where('e.city LIKE :city')
+         ->setParameter('city', $city.'%');
+
+      $arrayQb = $qb->getQuery()->getArrayResult();
+      $array = array();
+      foreach ($arrayQb as $value) {
+        $array[] = $value;
+      }
+
+      return $array;
+    }
+
 //    /**
 //     * @return Advert[] Returns an array of Advert objects
 //     */

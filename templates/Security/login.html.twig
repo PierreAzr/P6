@@ -6,15 +6,18 @@
             {{ error.messageKey }}
         </div>
     {% endif %}
-
+<br>
+<br>
+<br>
+<br>
     <div class="row justify-content-center">
         <div class="col-md-4">
-            <div class="well">
+            <div class="">
                 <form action="{{ path('security_login') }}" method="post">
                     <fieldset>
                         <legend><i class="fa fa-lock" aria-hidden="true"></i> Connexion</legend>
                         <div class="form-group">
-                            <label for="username">Username</label>
+                            <label for="username">Pseudo</label>
                             <input type="text" id="username" name="_username" value="{{ last_username }}" class="form-control"/>
                         </div>
                         <div class="form-group">
@@ -24,19 +27,24 @@
 
                         <div class="form-group">
                           <div class="custom-control custom-checkbox">
-                            <input type="checkbox"  class="custom-control-input" id="remember_me" name="_remember_me" />
-                            <label class="custom-control-label" for="remember_me">Ce souvenir de moi</label>
+                            <input type="checkbox"  class="custom-control-input" id="remember_me2" name="_remember_me" />
+                            <label class="custom-control-label" for="remember_me2">Ce souvenir de moi</label>
                           </div>
                         </div>
 
                         <input type="hidden" name="_csrf_token" value="{{ csrf_token('authenticate') }}"/>
-                        <button type="submit" class="btn btn-primary">
-                            <i class="fa fa-sign-in" aria-hidden="true">Connexion</i>
-                        </button>
+                        <div class="row justify-content-center">
+                          <button type="submit" class="btn btn-info">
+                              <i class="fa fa-sign-in" aria-hidden="true">Connexion</i>
+                          </button>
+                        </div>
                     </fieldset>
                 </form>
             </div>
-            <a href="{{ path('security_resetpass_mailer')}}">Mot de passe oubliée</a>
+            <br>
+            <a class="text-info" href="{{ path('security_resetpass_mailer')}}">Mot de passe oubliée ?</a>
+            <p>Pas encore membre ? <a class="text-info" href="{{ path('user_registration')}}">Inscrivez-vous</a></p>
+
         </div>
     </div>
 

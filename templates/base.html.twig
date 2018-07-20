@@ -14,20 +14,17 @@
         <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js" integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49" crossorigin="anonymous"></script>
         <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.1/js/bootstrap.min.js" integrity="sha384-smHYKdLADwkXOn1EmN1qk/HfnUcbVRZyYmZ4qpPea6sjB/pTJ0euyQp0Mk8ck+5T" crossorigin="anonymous"></script>
 
+        <link href="https://fonts.googleapis.com/css?family=Amatic+SC|Noticia+Text|Prompt|Rajdhani" rel="stylesheet">
+        <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.1.1/css/all.css" integrity="sha384-O8whS3fhG2OnA5Kas0Y9l3cfpmYjapjI0E4theH4iuMD+pLhbf6JI0jIMfYcK3yZ" crossorigin="anonymous">
+        <link rel="stylesheet" href="{{ asset('main.css') }}">
+
 
         {% block stylesheets %}{% endblock %}
         {% block javascripts %}{% endblock %}
 
-
-        <style media="screen">
-        .navbar {
-          background-color:white;
-        }
-
-        </style>
     </head>
     <body>
-        <nav class="navbar navbar-expand-lg navbar-light bg-light">
+        <nav class="navbar navbar-expand-lg navbar-light fixed-top">
           <div class="container">
           <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
             <span class="navbar-toggler-icon"></span>
@@ -35,14 +32,24 @@
 
             <a class="navbar-brand" href="{{ path('home') }}">Home</a>
             <div class="d-block d-lg-none d-xl-none">
-              <button type="button" class="btn btn-outline-primary" data-toggle="modal" data-target="#connectModal">
-                Connexion
-              </button>
-              <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
+              {% if is_granted('ROLE_USER') %}
+              <form action="{{ path('security_logout') }}" method="post">
+                <button class="btn btn-outline-warning my-2 my-sm-0" type="submit">Déconnexion</button>
+              </form>
+              {% else %}
+              <form action="{{ path('user_registration')}}" method="post">
+                <button class="btn btn-outline-success" type="submit">S'incrire</button>
+                <button type="button" class="btn btn-outline-info" data-toggle="modal" data-target="#connectModal">
+                  Connexion
+                </button>
+              </form>
+
+              {% endif %}
+
             </div>
             <div class="collapse navbar-collapse" id="navbarSupportedContent">
               <ul class="navbar-nav mr-auto">
-                <li class="nav-item active">
+                <li class="nav-item">
                   <a class="nav-link" href="{{ path('advert_index') }}">Annonce <span class="sr-only">(current)</span></a>
                 </li>
                 <li class="nav-item">
@@ -51,9 +58,19 @@
               </ul>
             </div>
             <div class=" d-none d-lg-block d-xl-block">
-              <button type="button" class="btn btn-outline-primary" data-toggle="modal" data-target="#connectModal">
-                Connexion
-              </button>
+              {% if is_granted('ROLE_USER') %}
+              <form action="{{ path('security_logout') }}" method="post">
+                <button class="btn btn-outline-warning my-2 my-sm-0" type="submit">Déconnexion</button>
+              </form>
+              {% else %}
+              <form action="{{ path('user_registration')}}" method="post">
+                <button class="btn btn-info" type="submit">S'incrire</button>
+                <button type="button" class="btn btn-outline-info" data-toggle="modal" data-target="#connectModal">
+                  Connexion
+                </button>
+              </form>
+
+              {% endif %}
             </div>
           </div>
         </nav>
@@ -72,7 +89,7 @@
               <form action="{{ path('security_login') }}" method="post">
                   <fieldset>
                       <div class="form-group">
-                          <label for="username">Username</label>
+                          <label for="username">Pseudo</label>
                           <input type="text" id="username" name="_username"  class="form-control"/>
                       </div>
                       <div class="form-group">
@@ -88,15 +105,18 @@
                       </div>
 
                       <input type="hidden" name="_csrf_token" value="{{ csrf_token('authenticate') }}"/>
+                      <input type="hidden" name="_target_path" value="{{ app.request.uri }}" />
                       <div class="row justify-content-center">
-                        <button type="submit" class="btn btn-primary">
+                        <button type="submit" class="btn btn-info">
                             <i class="fa fa-sign-in" aria-hidden="true">Connexion</i>
                         </button>
                       </div>
 
                   </fieldset>
               </form>
-              <a href="{{ path('security_resetpass_mailer')}}">Mot de passe oubliée</a>
+              <a class="text-info" href="{{ path('security_resetpass_mailer')}}">Mot de passe oubliée ?</a>
+              <p>Pas encore membre ? <a class="text-info" href="{{ path('user_registration')}}">Inscrivez-vous</a></p>
+
             </div>
             <!-- <div class="modal-footer">
               <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
@@ -107,27 +127,23 @@
       </div>
 
 
-<div class="container text-cente">
+<div id="message" class="container text-center">
+  <br>
+  <br>
       {% for message in app.flashes('notice') %}
-
           <div class="alert alert-info" role="alert">
             <strong>{{ message }}</strong>
-
+            </div>
       {% endfor %}
 </div>
-
-      {% for label, messages in app.flashes %}
-          {% for message in messages %}
-              <div class="flash-{{ label }}">
-                  {{ message }}
-              </div>
-          {% endfor %}
-      {% endfor %}
-
 <div class="container">
   {% block body %}{% endblock %}
 </div>
 
-
+<!-- <script type="text/javascript">
+setTimeout(function() {
+  $('#message').remove();
+}, 3000); -->
+</script>
     </body>
 </html>
