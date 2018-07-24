@@ -21,12 +21,6 @@ class IndexController extends Controller
      */
     public function index()
     {
-
-    //   if (!$this->get('security.authorization_checker')->isGranted('IS_AUTHENTICATED_REMEMBERED')) {
-    //   throw $this->createAccessDeniedException();
-    // }
-    //  $this->denyAccessUnlessGranted('IS_AUTHENTICATED_REMEMBERED');
-
         return $this->render('index.html.twig');
     }
 
@@ -40,4 +34,11 @@ class IndexController extends Controller
         return $this->render('Admin/index.html.twig');
     }
 
+    /**
+     * @Route("/", name="legal")
+     */
+    public function legal()
+    {
+        return $this->render('legal.html.twig');
+    }
 }

@@ -16,6 +16,8 @@
 
         <link href="https://fonts.googleapis.com/css?family=Amatic+SC|Noticia+Text|Prompt|Rajdhani" rel="stylesheet">
         <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.1.1/css/all.css" integrity="sha384-O8whS3fhG2OnA5Kas0Y9l3cfpmYjapjI0E4theH4iuMD+pLhbf6JI0jIMfYcK3yZ" crossorigin="anonymous">
+
+
         <link rel="stylesheet" href="{{ asset('main.css') }}">
 
 
@@ -29,13 +31,15 @@
           <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
             <span class="navbar-toggler-icon"></span>
           </button>
-
-            <a class="navbar-brand" href="{{ path('home') }}">Home</a>
+            <!-- taille xs sm md -->
+            <a class="navbar-brand font-weight-bold text-info" href="{{ path('home') }}">Olikin</a>
             <div class="d-block d-lg-none d-xl-none">
               {% if is_granted('ROLE_USER') %}
               <form action="{{ path('security_logout') }}" method="post">
                 <button class="btn btn-outline-warning my-2 my-sm-0" type="submit">Déconnexion</button>
+                <a class="para" href="{{ path('user') }}"><i class="fas fa-cog fa-1x"></i></a>
               </form>
+
               {% else %}
               <form action="{{ path('user_registration')}}" method="post">
                 <button class="btn btn-outline-success" type="submit">S'incrire</button>
@@ -43,24 +47,28 @@
                   Connexion
                 </button>
               </form>
-
               {% endif %}
 
             </div>
             <div class="collapse navbar-collapse" id="navbarSupportedContent">
               <ul class="navbar-nav mr-auto">
-                <li class="nav-item">
+                <li class="nav-item {% block index %}{% endblock %}">
                   <a class="nav-link" href="{{ path('advert_index') }}">Annonce <span class="sr-only">(current)</span></a>
                 </li>
-                <li class="nav-item">
+                <li class="nav-item {% block new %}{% endblock %}">
                   <a class="nav-link" href="{{ path('advert_new') }}">Ajoutez une annonce</a>
+                </li>
+                <li class="nav-item">
+                  <a class="nav-link" href="{{ path('contact') }}">Contact</a>
                 </li>
               </ul>
             </div>
+
             <div class=" d-none d-lg-block d-xl-block">
               {% if is_granted('ROLE_USER') %}
               <form action="{{ path('security_logout') }}" method="post">
                 <button class="btn btn-outline-warning my-2 my-sm-0" type="submit">Déconnexion</button>
+                <a class="para" href="{{ path('user') }}"><i class="fas fa-cog "></i></a>
               </form>
               {% else %}
               <form action="{{ path('user_registration')}}" method="post">
@@ -78,7 +86,7 @@
       <!-- Modal -->
       <div class="modal fade" id="connectModal" tabindex="-1" role="dialog" aria-labelledby="connectModalLabel" aria-hidden="true">
         <div class="modal-dialog" role="document">
-          <div class="modal-content">
+          <div class="modal-content text-info" >
             <div class="modal-header">
               <h5 class="modal-title" id="connectModalLabel">Connexion</h5>
               <button type="button" class="close" data-dismiss="modal" aria-label="Close">
@@ -127,19 +135,37 @@
       </div>
 
 
+{% block img %}{% endblock %}
 <div id="message" class="container text-center">
-  <br>
-  <br>
       {% for message in app.flashes('notice') %}
           <div class="alert alert-info" role="alert">
             <strong>{{ message }}</strong>
             </div>
       {% endfor %}
 </div>
+
+  {% block ind %} {% endblock %}
+
+
 <div class="container">
   {% block body %}{% endblock %}
 </div>
 
+
+
+
+<footer class="footer">
+  <div class="row">
+    <div class="col-6">
+
+    </div>
+    <div class="col-6">
+      <a class="linkfooter" href="{{ path('legal') }}">Mention legales</a>
+      <a class="linkfooter" href="{{ path('contact') }}">Contact</a>
+    </div>
+  </div>
+
+</footer>
 <!-- <script type="text/javascript">
 setTimeout(function() {
   $('#message').remove();

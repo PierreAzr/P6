@@ -30,18 +30,18 @@ protected $twig;
 
     // on récupere l'email du destinataire
     $email = $event->getUser()->getEmail();
-
+    $emailsite = $this->container->getParameter('mail_site');
     $message =  (new \Swift_Message())
-      ->setSubject('Veloplus')
+      ->setSubject('Olikin')
       ->setTo($user->getEmail())
-      ->setFrom('veloplus@exemple.com', 'VeloPlus')
+      ->setFrom($emailsite , 'Olikin')
       ->setBody($content, 'text/html')
       ;
 
-echo "register mail ok modif en prod";
+//echo "register mail ok modif en prod";
 // dump($message);
 // exit;
-      // $this->mailer->send($message);
+       $this->mailer->send($message);
 
   }
 

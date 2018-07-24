@@ -1,13 +1,14 @@
 {# templates/register.html.twig #}
 {% extends 'base.html.twig' %}
-
+{% block img %}
+<div class="img-band img3">
+<h2 class="text-center banner">Inscription</h2>
+</div>
+{% endblock %}
 {% block body %}
-<br>
-<br>
-<br>
-<br>
+
   <div class="row justify-content-center">
-    <div class="col-md-4">
+    <div class="col-md-4 formback">
 
 {{ form_start(form) }}
   <legend><i class="fab fa-odnoklassniki" aria-hidden="true"></i> Inscription</legend>

@@ -1,181 +1,230 @@
 {% extends 'base.html.twig' %}
 
 {% block title %}Annonce{% endblock %}
-
-{% block body %}
-<br>
-<br>
-    <div class="step">
-      <h3 class="tabstep font-weight-bold text-center">Annonce</h3>
-              <div class="col-sm-10 offset-sm-1">
-                <div class="row text-info font-weight-bold">
-                  <div class="col-sm-6 text-left">
-                    <h2 class="font-weight-bold"><i class="fas fa-map-marker-alt"> </i> <strong>{{ advert.city }}</strong></h2>
-                    <p class="font-weight-bold"><i class="far fa-calendar-alt"></i>
-                    {{ advert.appointmentdate|date('d/m') }}
-                    <i class="far fa-clock"></i>
-                    {{ advert.appointmentdate|date('H')}}H{{ advert.appointmentdate|date('i')}}
-                    </p>
-                  </div>
-                  <div class="col-sm-6 text-right">
-                    <p><i class="far fa-hourglass"> Durée:</i>
-                      {% if advert.time|date('H') == '00' %}
-                          {{ advert.time|date('i')}}min</p>
-                      {% else %}
-                          {{ advert.time|date('H')}}H{{ advert.time|date('i')}}
-                      {% endif %}
-                    </p>
-                    <p><i class="fas fa-level-up-alt"></i> Niveau:
-                    {{ advert.level }}</p>
-                  </div>
-                </div>
-                <div id='map' class="center-block"></div>
-                <br>
-                <div class="row">
-                  <div class="text-muted center-block">
-                    <strong> {{ advert.content }}</strong>
-                  </div>
-                </div>
-                <br>
-                <div class="row">
-                  <div class="col-sm-6 text-left">
-                    <p><span class="text-info font-weight-bold">Liste des participant:</span>
-                    {% for participant in advert.participant %}
-                    {{participant.username}},
-                    {% endfor %}
-                    </p>
-                  </div>
-                  <div class="col-sm-6 text-right">
-                    {% if is_granted('ROLE_USER') %}
-                        {% set foo = 'null' %}
-                        {% for participant in advert.participant %}
-                          {% if  app.user.username == participant.username %}
-                            <form class="" action="{{ path('remove_participation', {'id': advert.id}) }}" method="post">
-                                <button type="submit" class="btn btn-info" name="button">Ne plus participer</button>
-                            </form>
-                          {% set foo = 'no' %}
-                          {% endif %}
-                        {% endfor %}
-                        {% if foo == 'null' %}
-                            <form class="" action="{{ path('add_participation', {'id': advert.id}) }}" method="post">
-                                <button type="submit" class="btn btn-info" name="button">Participer</button>
-                            </form>
-                        {% endif %}
-                    {% else %}
-                    <form class="" action="{{ path('add_participation', {'id': advert.id}) }}" method="post">
-                        <button type="submit" class="btn btn-info" name="button">Participer</button>
-                    </form>
-                    {% endif %}
-                  </div>
-                </div>
-                  </div>
-              </div>
-
-
-
-        <div class="step">
-          <h3 class="tabstep font-weight-bold text-center">Commentaire</h3>
-                  <div class="col-md-12">
-
-
-
-            </div>
-
-                    <div class="tabstep font-weight-bold text-center">
-
-                      <h3 class="tabstepcontent">Commentaire</h3>
-
-              </div>
-
-
-
-{% import _self as forms %}
-
-{% macro recursiveComment(comment, advert) %}
-	{% import _self as macros %}
-  <br>
-  <div class="card">
-    <h5>{{comment.user.username}}</h5>
-    {{ comment.date|date('d-m-Y H:i:s') }}
-      <p>{{comment.content}}</p>
-      <!-- <div style="text-align:right;"></div> -->
-
-
-
-                  {% if is_granted('ROLE_USER') %}
-    									{% if comment.lvl < 1 %}
-                      <button class="responsebutton" id="button{{ comment.id }}" type="button" onclick="Response({{ comment.id }})" name="button">Reponde</button>
-                      <div class="form_com" id="form{{ comment.id }}"></div>
-    									{% else %}
-                      <button class="responsebutton" id="button{{ comment.id }}" type="button" onclick="FinalResponse({{ comment.id }})" name="button">Reponde a un commentaire enfant</button>
-                      <input id="inputform{{ comment.id }}" type="hidden" name="form{{ comment.id }}" value="{{comment.parent.id}}">
-                      <div class="form_com" id="form{{ comment.id }}"></div>
-    									{% endif %}
-                  {% else %}
-                    <button class="responsebutton" id="button{{ comment.id }}" type="button" onclick="Response({{ comment.id }})" name="button">Reponde</button>
-                  {% endif %}
-
+{% block img %}
+<div class="img-band img2">
+<h2 class="text-center banner">Annonces</h2>
 </div>
+{% endblock %}
+{% block body %}
 
-							{% if comment.children|length %}
-								{% for child in comment.children %}
-										<div style="padding-left:10%; border-left:5px solid red">
-												{{ macros.recursiveComment(child, advert) }}
-										</div>
-								{% endfor %}
-							{% endif %}
-
-
-{% endmacro %}
 
 <div class="col-sm-10 offset-sm-1">
-{% for comment in advert.comments %}
-   {#si le commentaire n'a pas de parent #}
-   {% if comment.parent is null %}
-   {#appel de la fonction recursive pour afficher les commentaires parents et enfants#}
-   {#forms imports de "form.html.twig#}
-   {{ forms.recursiveComment(comment, advert) }}
- {% endif %}
-{% endfor %}
-</div>
+    <div class="row text-info font-weight-bold advert-show">
+      <div class="col-sm-7">
+        <br>
+        <br>
+          <div class="row">
+            <div class="col-sm-6 text-center">
+              <h2 class="font-weight-bold"><i class="fas fa-map-marker-alt"> </i> <strong>{{ advert.city }}</strong></h2>
+              <p class="font-weight-bold"><i class="far fa-calendar-alt"></i>
+              {{ advert.appointmentdate|date('d/m') }}
+              <i class="far fa-clock"></i>
+              {{ advert.appointmentdate|date('H')}}H{{ advert.appointmentdate|date('i')}}
+              </p>
+            </div>
+            <div class="col-sm-6 text-center">
+              <p><i class="far fa-hourglass"> Durée:</i>
+                {% if advert.time|date('H') == '00' %}
+                    {{ advert.time|date('i')}}min</p>
+                {% else %}
+                    {{ advert.time|date('H')}}H{{ advert.time|date('i')}}
+                {% endif %}
+              </p>
+              <p><i class="fas fa-level-up-alt"></i> Niveau:
+              {{ advert.level }}</p>
+            </div>
+          </div>
 
-{% if is_granted('ROLE_USER') %}
-  <div class="form" id="formnull">
-  <div id="formbase">
-    {{ form_start(form) }}
-        {{ form_widget(form) }}
-        <button class="btn">{{ button_label|default('Envoyer') }}</button>
-    {{ form_end(form) }}
-  </div>
-  </div>
-  <div id="newformbutton">
-    <button type="button" onclick="Response('null')" name="button">Laiser un commntaire</button>
-  </div>
-  {% else %}
-      <p>Vous devez etre connecter pour laisser un comentaire</p>
-{% endif %}
+          <div class="row" style="margin: 0 auto;">
+            <div class="" style="margin: 0 auto;">
+              <div class="text-muted" style="margin: 0 auto;">
+              {{ advert.content }}
+              </div>
+            </div>
+          </div>
+          <br>
 
-    <!-- <a href="{{ path('advert_index') }}">back to list</a> -->
-<br>
-    <!-- <a href="{#{ path('advert_edit', {'id': advert.id}) }#}">edit</a> -->
-<br>
+          <div class="row">
+            <div class="col-sm-6 text-left">
+              <p><span class="text-info font-weight-bold">Liste des participant:</span>
+              {% for participant in advert.participant %}
+              {{participant.username}},
+              {% endfor %}
+              </p>
+            </div>
+            <div class="col-sm-6 text-right">
+              {% if is_granted('ROLE_USER') %}
+                  {% set foo = 'null' %}
+                  {% for participant in advert.participant %}
+                    {% if  app.user.username == participant.username %}
+                      <form class="" action="{{ path('remove_participation', {'id': advert.id}) }}" method="post">
+                          <button type="submit" class="btn btn-info" name="button">Ne plus participer</button>
+                      </form>
+                    {% set foo = 'no' %}
+                    {% endif %}
+                  {% endfor %}
+                  {% if foo == 'null' %}
+                      <form class="" action="{{ path('add_participation', {'id': advert.id}) }}" method="post">
+                          <button type="submit" class="btn btn-info" name="button">Participer</button>
+                      </form>
+                  {% endif %}
+              {% else %}
+              <form class="" action="{{ path('add_participation', {'id': advert.id}) }}" method="post">
+                  <button type="submit" class="btn btn-info" name="button">Participer</button>
+              </form>
+              {% endif %}
+            </div>
+          </div>
 
           </div>
 
+      <div class="col-sm-5">
+          <div id='map' style="margin-right:0px; width:auto"></div>
+      </div>
+    </div>
+
+
+        <br>
+        <br>
+
+    <div class="step">
+      <h3 class="tabstep font-weight-bold text-center">Commentaire</h3>
+    </div>
+
+
+
+
+            {% import _self as forms %}
+
+            {% macro recursiveComment(comment, advert) %}
+            	{% import _self as macros %}
+
+              <div class="card comaff">
+                <div class="card-body">
+                <div class="row">
+                  <div class="col-6 font-weight-bold text-info">
+                    <h5>{{comment.user.username}}</h5>
+                  </div>
+                  <div class="col-6 text-right">
+                    {{ comment.date|date('d-m-Y H:i:s') }}
+                  </div>
+                </div>
+                <div class="row">
+                  <div class="col-12">
+                      <div class="text-muted comcontent" >
+                        <p>{{comment.content}}</p>
+                      </div>
+
+                  </div>
+                </div>
+
+                      {% if is_granted('ROLE_USER') %}
+        									{% if comment.lvl < 1 %}
+                          <div class="text-right">
+                            <button class="responsebutton btn btn-outline-info" id="button{{ comment.id }}" type="button" onclick="Response({{ comment.id }})" name="button">Repondre</button>
+                          </div>
+
+                          <div class="form_com" id="form{{ comment.id }}"></div>
+        									{% else %}
+                          <div class="text-right">
+                            <button class="responsebutton btn btn-outline-info" id="button{{ comment.id }}" type="button" onclick="FinalResponse({{ comment.id }})" name="button">Reponde a un commentaire enfant</button>
+                          </div>
+
+                          <input id="inputform{{ comment.id }}" type="hidden" name="form{{ comment.id }}" value="{{comment.parent.id}}">
+                          <div class="form_com" id="form{{ comment.id }}"></div>
+        									{% endif %}
+                      {% else %}
+
+                      {% endif %}
+                </div>
+              </div>
+
+
+							{% if comment.children|length %}
+              <div class="comresgroup">
+
+
+								{% for child in comment.children %}
+										<div class="comrespaff">
+												{{ macros.recursiveComment(child, advert) }}
+										</div>
+								{% endfor %}
+                </div>
+							{% endif %}
+
+              {% endmacro %}
+
+<div class="row">
+    <div class="col-sm-10 offset-sm-1">
+    {% for comment in advert.comments %}
+       {#si le commentaire n'a pas de parent #}
+       {% if comment.parent is null %}
+       {#appel de la fonction recursive pour afficher les commentaires parents et enfants#}
+       {#forms imports de "form.html.twig#}
+       {{ forms.recursiveComment(comment, advert) }}
+     {% endif %}
+    {% endfor %}
+    </div>
+
+    <div class="col-sm-10 offset-sm-1">
+        {% if is_granted('ROLE_USER') %}
+          <div class="form" id="formnull">
+              <div id="formbase">
+                <hr>
+                {{ form_start(form) }}
+                  {{ form_label(form.content, "Laisser un commentaire") }}
+                    {{ form_widget(form) }}
+                    <div class="text-right">
+                      <span id="formbase2"></span>
+                      <button id="btncom" class="btn btn-info">{{ button_label|default('Envoyer') }}</button>
+                    </div>
+                {{ form_end(form) }}
+
+                  <!-- <button id="formremove" type="button" onclick="Response(\'null\')" name="button">Annuler</button> -->
+              </div>
+          </div>
+          <div class="text-center" id="newformbutton">
+            <br>
+            <br>
+            <button class="btn btn-info" type="button" onclick="Response('null')" name="button">Laiser un commntaire</button>
+          </div>
+          {% else %}
+          <div class="text-center">
+            <p>Vous devez etre connecter pour laisser un comentaire</p>
+          </div>
+
+          {% endif %}
+    </div>
+
+  </div>
+<br>
+<br>
+</div>
+
+
+
+
+  <!-- Script pour les commentaire -->
     <script type="text/javascript">
     $( document ).ready(function() {
         $('#newformbutton').hide();
         $('#comment_idreponse').val('null');
+        // $('#formremove').hide();
     });
 
     function Response(e) {
       $('.responsebutton').show();
-      $('#formremove').remove();
+      // $('#formremove').show();
+       $('#formremove').remove();
       if (e == 'null') {
         $('#newformbutton').hide();
+        //ajout si bouton annuler dans forms
+        // $('#formremove').hide();
+
       }else {
         $('#newformbutton').show();
-        $('#formbase').append('<button id="formremove" type="button" onclick="Response(\'null\')" name="button">Annuler</button>');
+        $('#formbase2').append('<button id="formremove" class="btn btn-outline-warning" type="button" onclick="Response(\'null\')" name="button">Annuler</button>');
         $('#button'+e).hide();
       }
       $('#formbase').appendTo('#form'+e);
@@ -184,14 +233,17 @@
 
     function FinalResponse(e) {
       $('.responsebutton').show();
+      $('#newformbutton').show();
+        // $('#formremove').show();;
       $('#formremove').remove();
       $('#button'+e).hide();
-      $('#form'+e).append('<button id="formremove" type="button" onclick="Response(\'null\')" name="button">Annuler</button>');
+      $('#formbase2').append('<button id="formremove" class="btn btn-outline-warning" type="button" onclick="Response(\'null\')" name="button">Annuler</button>');
       $('#formbase').appendTo('#form'+e);
       var parent =$('#inputform'+e).val();
       $('#comment_idreponse').val(parent);
     }
     </script>
+
 
 
     <!-- MAPBOX -->
@@ -202,17 +254,24 @@
     <script src='https://api.mapbox.com/mapbox-gl-js/plugins/mapbox-gl-geocoder/v2.2.0/mapbox-gl-geocoder.min.js'></script>
     <link rel='stylesheet' href='https://api.mapbox.com/mapbox-gl-js/plugins/mapbox-gl-geocoder/v2.2.0/mapbox-gl-geocoder.css' type='text/css' />
 
+      <!-- Scipt MAPBOX -->
         <script>
-        mapboxgl.accessToken = '{{mapbox_token}}';
-        var map = new mapboxgl.Map({
-        container: 'map',
-        center: [{{advert.lng}}, {{advert.lat}}],
-        zoom: 9,
-        style: 'mapbox://styles/mapbox/streets-v10'
-        });
-
-        new mapboxgl.Marker().setLngLat([{{advert.lng}},{{advert.lat}}]).addTo(map);;
-
+        // mapboxgl.accessToken = '{{mapbox_token}}';
+        // var map = new mapboxgl.Map({
+        // container: 'map',
+        // center: [{{advert.lng}}, {{advert.lat}}],
+        // zoom: 13,
+        // style: 'mapbox://styles/mapbox/streets-v10'
+        // });
+        //
+        // new mapboxgl.Marker().setLngLat([{{advert.lng}},{{advert.lat}}]).addTo(map);;
+        //
+        // //controle + -
+        // //options.showCompassBoolean(false) surpime le compat
+        // var nav = new mapboxgl.NavigationControl({showCompass:false});
+        // map.addControl(nav, 'top-left');
+        // //suppression du zoom
+        // map.scrollZoom.disable();
         </script>
 
 

@@ -1,10 +1,58 @@
 {% extends 'base.html.twig' %}
+{% block title %}Accueil{% endblock %}
 
-{% block body %}
-<div class="container">
 
-    <a href="{{ path('security_login')}}"> Connexion</a> <br>
-    <a href="{{ path('user_registration')}}"> Inscription</a>
+{% block ind %}
+<div class=" band1">
 
+  <div class="container">
+<br>
+<br>
+    <div class="row">
+    <div class="col-12 text-center">
+      <br>
+    <h2 class="textband1">Trouve des gens de ta ville pour faire du velo esembles</h2>
+    <br>
+    <br>
+    <!-- <div class="row">
+      <form class="" action="{{ path('security_login')}}" method="post">
+        <button class="btn btn-info btnacc" type="button" name="button">Connexion</button>
+      </form>
+      <br>
+      <br>
+      <form class="" action="{{ path('user_registration')}}" method="post">
+        <button class="btn btn-info btnacc" type="button" name="button">Inscription</button>
+      </form>
+    </div> -->
+
+    </div>
+    </div>
+
+    <div class="row textband2">
+      <div class="col-md-4">
+        <a class="textband2link" href="{{ path('advert_index')}}">
+          <div class="cardacc text-center">
+              <p>Trouve une annonce qui te corespond</p>
+          </div>
+        </a>
+
+      </div>
+      <div class="col-md-4">
+        <a class="textband2link" href="{{ path('advert_new')}}">
+          <div class="cardacc text-center">
+              <p>Crée et partage ton annonce</p>
+        </a>
+      </div>
+      </div>
+      <div class="col-md-4">
+        <a class="textband2link" href="{{ path('advert_index')}}">
+          <div class="cardacc text-center">
+              <p>Particpe pour faire de belle rencontre</p>
+        </a>
+      </div>
+    </div>
+  </div>
 </div>
+</div>
+
 {% endblock %}

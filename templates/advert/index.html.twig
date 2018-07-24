@@ -2,81 +2,150 @@
 
 {% block title %}Advert index{% endblock %}
 
+{% block img %}
+<div class="img-band img1">
+<h2 class="text-center banner">Liste des annonces</h2>
+</div>
+{% endblock %}
+
+{% block index %}activenav{% endblock %}
+
 {% block body %}
+
+<!-- fin div du container dans base -->
+</div>
+
+<div class="search">
+<div class="col-12">
+  {{ form_start(form, {'attr': {'class': 'form-row justify-content-center'}}) }}
+  <div class="col-auto">
+    {{ form_errors(form, {'attr': {'class': 'error'}}) }}
+
+      {{ form_widget(form.city, {
+        'attr': {
+          'data-id': 'city',
+          'data-url': path('autocomplete')
+          }
+        })
+      }}
+   </div>
+   <div class="col-auto">
+     {{ form_widget(form.submit, {'label': 'Rechercher', 'attr': {'class': 'btn btn-outline-info'}}) }}
+
+   {{ form_end(form) }}
+   </div>
+
+
+</div>
+</div>
+
+
 <br>
   <br>
-    <h1 class="tabstep font-weight-bold text-center pl">Liste des Annonces</h1>
-    <div class="col-xs-12 col-sm-10 offset-sm-1 col-lg-9 offset-lg-3">
-    <div class="row justify-content-center">
-      {{ form_start(form, {'attr': {'class': 'form-row autoinput'}}) }}
-        {{ form_errors(form) }}
-      <div class="col-xs-6 col-sm-6">
-          {{ form_widget(form.city, {
-            'attr': {
-              'data-id': 'city',
-              'data-url': path('autocomplete')
-              }
-            })
-          }}
-      </div>
-          <div class="col-xs-6 col-sm-6">
-            {{ form_widget(form.submit, {'label': 'Rechercher', 'attr': {'class': 'btn btn-info'}}) }}
-          </div>
-          {{ form_end(form) }}
+
+  <div class="col-12 col-sm-10 offset-sm-1 col-lg-9 offset-lg-3">
+  <div class="row justify-content-center">
+
+
     </div>
-</div>
+        <div class="col-6 col-sm-6">
+          {#{ form_widget(form.submit, {'label': 'Rechercher', 'attr': {'class': 'btn btn-info'}}) }#}
+        </div>
+        {#{ form_end(form) }#}
+  </div>
+
+  <!-- debut second container fin div container dans base -->
+<div class="container">
+
+
+    <!-- <h1 class="tabstep font-weight-bold text-center pl">Liste des Annonces</h1> -->
+
+
+
+
 <br>
 <br>
   <div class="row">
-    <div class="col-sm-3 col-lg-3">
-      <div class="d-none d-lg-block d-xl-block">
+    <div class="col-md-3 col-lg-3 d-none d-md-block d-lg-block d-xl-block">
+
       <div class="card" style="">
-      <div class="card-body">
-      <div class="card-title">
-        <h2 class="text-info font-weight-bold"><strong>Ville</strong></h2>
+      <div class="card-body" style=" margin: 0 auto;">
+      <div class="card-title" style=" margin: 0 auto;">
+        <h2 class="text-info list-city-title font-weight-bold">Les villes avec des annonces :</h2>
         </div>
 
+        <ul style="border-left: 2px solid #17a2b8;">
         {% for city in allcity %}
-        <p>
-          <a class="text-info font-weight-bold" href="{{ path('advert_index', {'city': city.city}) }}">
-            {{city.city}}({{city.1}})
-          </a>
-        </p>
+          <li>
+            <a class="list-city text-info font-weight-bold" href="{{ path('advert_index', {'city': city.city}) }}">
+              {{city.city}} ({{city.1}})
+            </a>
+          </li>
     {% endfor %}
+    </ul>
     </div>
     <br>
     <br>
   </div>
-  </div>
+
 </div>
 
 
 
-  <div class="col-xs-12 col-sm-10  col-lg-9 ">
+  <div class="col-12 col-sm-12 col-md-9 col-lg-9 justify-content-center">
     {% for advert in adverts %}
-<a href="{{ path('advert_show', {'id': advert.id}) }}" class="text-info cardhover">
+    <a href="{{ path('advert_show', {'id': advert.id}) }}" class="text-info cardhover">
     <div class="card" style="">
     <div class="card-body">
     <div class="card-title">
       <div class="row">
-        <div class="col-xs-6 col-sm-6 text-left">
+        <div class="col-6 col-sm-6 text-left">
           <h2><i class="fas fa-chevron-right"> </i> <strong class="font-weight-bold">{{ advert.city }}</strong></h2>
-          <p class="font-weight-bold"><i class="far fa-calendar-alt"></i>
-          {{ advert.appointmentdate|date('d/m') }}
-          <i class="far fa-clock"></i>
-          {{ advert.appointmentdate|date('H')}}H{{ advert.appointmentdate|date('i')}}
-          </p>
+          <div class="d-none d-sm-block">
+            <p class="font-weight-bold">
+            <i class="far fa-calendar-alt"> </i>
+            {{ advert.appointmentdate|date('d/m') }}
+            <i class="far fa-clock"> </i>
+            {{ advert.appointmentdate|date('H')}}H{{ advert.appointmentdate|date('i')}}
+            </p>
+          </div>
+          <div class="d-block d-sm-none">
+            <p class="font-weight-bold" style="margin-bottom:0px">
+            <i class="far fa-calendar-alt"> </i>
+            {{ advert.appointmentdate|date('d/m') }}
+            </p>
+            <p class="font-weight-bold">
+            <i class="far fa-clock"> </i>
+            {{ advert.appointmentdate|date('H')}}H{{ advert.appointmentdate|date('i')}}
+            </p>
+          </div>
         </div>
-        <div class="col-xs-6 col-sm-6 text-right">
-          <p><i class="far fa-hourglass"> Durée:</i>
-            {% if advert.time|date('H') == '00' %}
-                {{ advert.time|date('i')}}min</p>
-            {% else %}
-                {{ advert.time|date('H')}}H{{ advert.time|date('i')}}
-            {% endif %}
-          </p>
-          <p><i class="fas fa-level-up-alt"></i> Niveau:
-          {{ advert.level }}</p>
+        <div class="col-6 col-sm-6 text-right">
+          <div class="d-none d-sm-block">
+            <p><i class="far fa-hourglass"></i> Durée:
+              {% if advert.time|date('H') == '00' %}
+                  {{ advert.time|date('i')}}min</p>
+              {% else %}
+                  {{ advert.time|date('H')}}H{{ advert.time|date('i')}}
+              {% endif %}
+            </p>
+            <p><i class="fas fa-level-up-alt"></i> Niveau:
+            {{ advert.level }}</p>
+          </div>
+
+          <div class="d-block d-sm-none">
+            <h2 style="color:white">|</h2>
+            <p style="margin-bottom:0px"><i class="far fa-hourglass"></i>
+              {% if advert.time|date('H') == '00' %}
+                  {{ advert.time|date('i')}} min
+              {% else %}
+                  {{ advert.time|date('H')}}H{{ advert.time|date('i')}}
+              {% endif %}
+            </p>
+            <p><i class="fas fa-level-up-alt"></i>
+            {{ advert.level }}</p>
+          </div>
+
         </div>
       </div>
       </div>

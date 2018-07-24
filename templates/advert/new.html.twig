@@ -2,6 +2,12 @@
 
 {% block title %}New Advert{% endblock %}
 
+{% block new %}activenav{% endblock %}
+{% block img %}
+<div class="img-band img2">
+<h2 class="text-center banner">Ajoutez une annonce</h2>
+</div>
+{% endblock %}
 {% block stylesheets %}
   <style>
       /*#map {  bottom:0; width:100%; }*/
@@ -9,98 +15,96 @@
 {% endblock %}
 
 {% block body %}
-    <br>
-      <br>
-    <h3 class="tabstep font-weight-bold text-center">Ajouter une annonce</h3>
-      <br>
-      <br>
-  {{ form_start(form) }}
-  <div class="step">
-    <h3 class="tabstep">Etape 1 : Indiquez la date et l'heure</h3>
-        <div class="form-group ">
-            <div class="col-md-12">
-              <div class="row">
-                <div class="timecenter">
-                  <div id="datepicker"></div>
-                  {{ form_widget(form.date) }}
-                </div>
-                <div class="timecenter">
-                  <div class="time text-center">
-                    <i class="far fa-clock fa-3x"><p></p></i>
-                    {#{ form_label(form.hour)}#}
-                    {{ form_widget(form.hour)}}
 
-                  </div>
-                </div>
-              </div>
+
+<div class="col-md-12 col-lg-10 offset-lg-1 text-info font-weight-bold advert-show">
+    {{ form_start(form) }}
+  <div class="row">
+    <div class="col-md-12 col-lg-12 col-xl-6">
+      <div class="row">
+        <div class=" col-12 col-sm-12 col-md-6 col-lg-6 text-center">
+            <div class="dateall">
+              <i class="far fa-calendar-alt fa-2x"></i>
+              <p>1. Choisizer une date</p>
+
+            <div id="datepicker"></div>
+            {{ form_widget(form.date) }}
             </div>
         </div>
-  </div>
-
-  <div class="step">
-    <h3 class="tabstep">Etape 2 : Indiquez le lieux</h3>
-        <div class="form-group">
-            <div class="col-md-12">
-              <div id="error" style="color:red;"></div>
-              <div id='map' class="center-block"></div>
+        <div class="col-sm-12 col-md-6 col-lg-6 text-center">
+            <div class="time text-center" style="margin-top:20px">
+              <i class="far fa-clock fa-2x"></i>
+              <p>2. Mettez l'heure du<br>rendez-vous:</p>
+              {#{ form_label(form.hour)}#}
+              {{ form_widget(form.hour)}}
             </div>
-        </div>
-  </div>
-
-  <div class="step">
-    <h3 class="tabstep">Etape 3 : Indiquez la durée et le niveaux</h3>
-        <div class="form-group">
-            <div class="col-md-12">
-              <div class="row">
-                <div class="col-md-6">
-                  <div class="time text-center">
-                    <i class="far fa-hourglass fa-2x"><p></p></i>
-                    {{ form_widget(form.time)}}
-                  </div>
-                  </div>
-                <div class="col-md-6">
-                  <div class="time text-center">
-                    <i class="fas fa-level-up-alt fa-2x"><p></p></i>
-                    {{ form_widget(form.level)}}
-                  </div>
-                </div>
-              </div>
+            <div class="time text-center">
+              <i class="far fa-map fa-2x"></i>
+              <p>3. Rechercher la ville et cliquer sur la carte pour ajouter le lieux du rendez-vous</p>
             </div>
+
         </div>
-  </div>
-  <div class="step">
-    <h3 class="tabstep">Etape 4 : Informations complementaires</h3>
-        <div class="form-group">
-            <div class="col-md-12 timecenter">
-              <div class="contentcom">
-                <div class="">
-                  <h3>Exemple</h3>
-                  <ul>
-                   <li>Si vous voulez passer par une foret (VTT)</li>
-                   <li>Vous avez une destination ou un objectif presis</li>
-                   <li>Laiser tous ce qui pourez completé l'annonce</li>
-                 </ul>
-
-                </div>
-              </div>
-
-
-            {{ form_widget(form.content)}}
-            </div>
-        </div>
-  </div>
-
-      {{ form_widget(form) }}
-      <br>
-      <div class="col-md-12 timecenter">
-      <div class="text-center">
-        <button class="btn btn-outline-primary center" onclick="valider()">{{ button_label|default('Envoyer') }}</button>
       </div>
     </div>
-  {{ form_end(form) }}
-<br>
-<br>
 
+    <br>
+    <br>
+
+    <div class="col-sm-12 col-md-12 col-lg-12 col-xl-6">
+
+        <div id='map'></div>
+        <div id="error" style="color:red;"></div>
+        <!-- <div id='map' class="center-block"></div> -->
+    </div>
+
+</div>
+</div>
+<div class="col-md-12 col-lg-10 offset-lg-1 text-info font-weight-bold advert-show">
+      <!-- <br>
+      <hr> -->
+      <br>
+      <div class="row">
+        <div class="col-12 col-sm-12 col-md-12 col-lg-3">
+          <div class="time text-center">
+            <i class="far fa-hourglass fa-2x"></i>
+            <p>4. Choisissez la durée<br>souhaité :</p>
+            {{ form_widget(form.time)}}
+          </div>
+          <div class="text-center time">
+            <i class="fas fa-level-up-alt fa-2x"></i>
+            <p>5. Choisissez le niveau</p>
+                {{ form_widget(form.level)}}
+          </div>
+
+        </div>
+        <div class="col-12 col-sm-12 col-md-12 col-lg-8 offset-lg-1">
+
+          <div class="contentcom">
+            <h3>6. Rédigée l'annonce avec les detail souhaitée</h3>
+          </div>
+          {{ form_widget(form.content)}}
+          <div class="contentcom">
+            <p>Exemples:</p>
+            <ul>
+             <li>Si c'est sur route ou terre (passée par une forêt nécessite un VTT)</li>
+             <li>Pour le niveau sport si c'est pour se dépenser ou la competition</li>
+             <li>Si vous voulez vous balader et prendre un pique-nique</li>
+           </ul>
+        </div>
+      </div>
+    </div>
+      <div class="row">
+        <div class="col-md-12">
+          <div class="text-center">
+            <button class="btn btn-info" onclick="valider()">{{ button_label|default('Envoyer') }}</button>
+          </div>
+        </div>
+      </div>
+
+    {{ form_widget(form) }}
+    {{ form_end(form) }}
+
+</div>
 
 <!-- On charge la bibliothèque datepicker  -->
 <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.7.1/js/bootstrap-datepicker.min.js"></script>
@@ -134,40 +138,48 @@ $(document).ready(function() {
     <link rel='stylesheet' href='https://api.mapbox.com/mapbox-gl-js/plugins/mapbox-gl-geocoder/v2.2.0/mapbox-gl-geocoder.css' type='text/css' />
 
         <script>
-        mapboxgl.accessToken = '{{mapbox_token}}';
-        var map = new mapboxgl.Map({
-        container: 'map',
-        center: [2.35, 46.11],
-        zoom: 5,
-        style: 'mapbox://styles/mapbox/streets-v10'
-        });
-        map.addControl(new MapboxGeocoder({
-            accessToken: mapboxgl.accessToken,
-            // limit results to rance
-            country: 'fr',
-            language: 'fr',
-
-        }));
-
-        var marker = new mapboxgl.Marker();
-        map.on('click', function (e) {
-          marker.setLngLat([e.lngLat.lng, e.lngLat.lat]).addTo(map);
-          // document.getElementById('advert_ltg').value = e.lngLat.lng;
-          // document.getElementById('advert_lat').innerHTML = e.lngLat.lat;
-          document.getElementById('advert_lat').setAttribute('value', e.lngLat.lat);
-          document.getElementById('advert_lng').setAttribute('value', e.lngLat.lng);
-              //  $.ajax({url: "https://api-adresse.data.gouv.fr/reverse/?lon=2.37&lat=48.357",
-              //   success: function(result){
-              //       $("#div1").html(result);
-              //       console.log(result);
-              //   }});
-
-         });
-
-         function valider() {
-           if (!document.getElementById('advert_lng').value) {
-             document.getElementById('error').innerHTML = "Vous devez choisir un lieux en cliquant sur la carte";
-           }
+        // mapboxgl.accessToken = '{{mapbox_token}}';
+        // var map = new mapboxgl.Map({
+        // container: 'map',
+        // center: [2.35, 46.11],
+        // zoom: 5,
+        // style: 'mapbox://styles/mapbox/streets-v10'
+        // });
+        // map.addControl(new MapboxGeocoder({
+        //     accessToken: mapboxgl.accessToken,
+        //     // limit results to rance
+        //     country: 'fr',
+        //     language: 'fr',
+        //
+        // }));
+        //
+        // //controle + -
+        // //options.showCompassBoolean(false) surpime le compat
+        // var nav = new mapboxgl.NavigationControl({showCompass:false});
+        // map.addControl(nav, 'top-left');
+        // //suppression du zoom
+        // map.scrollZoom.disable();
+        //
+        //
+        // var marker = new mapboxgl.Marker();
+        // map.on('click', function (e) {
+        //   marker.setLngLat([e.lngLat.lng, e.lngLat.lat]).addTo(map);
+        //   // document.getElementById('advert_ltg').value = e.lngLat.lng;
+        //   // document.getElementById('advert_lat').innerHTML = e.lngLat.lat;
+        //   document.getElementById('advert_lat').setAttribute('value', e.lngLat.lat);
+        //   document.getElementById('advert_lng').setAttribute('value', e.lngLat.lng);
+        //       //  $.ajax({url: "https://api-adresse.data.gouv.fr/reverse/?lon=2.37&lat=48.357",
+        //       //   success: function(result){
+        //       //       $("#div1").html(result);
+        //       //       console.log(result);
+        //       //   }});
+        //
+        //  });
+        //
+        //  function valider() {
+        //    if (!document.getElementById('advert_lng').value) {
+        //      document.getElementById('error').innerHTML = "Vous devez choisir un lieux en cliquant sur la carte";
+        //    }
          }
         </script>
 
