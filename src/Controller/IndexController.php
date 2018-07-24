@@ -35,7 +35,7 @@ class IndexController extends Controller
     }
 
     /**
-     * @Route("/", name="legal")
+     * @Route("/legal", name="legal")
      */
     public function legal()
     {
