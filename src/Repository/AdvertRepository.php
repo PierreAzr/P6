@@ -56,9 +56,12 @@ class AdvertRepository extends ServiceEntityRepository
 
     public function findByCity($city, $page, $nbPerPage)
     {
+      $value = new \DateTime();
         $qb = $this->createQueryBuilder('a')
-            ->andWhere('a.city = :val')
-            ->setParameter('val', $city)
+            ->andWhere('a.city = :city')
+            ->setParameter('city', $city)
+            ->andWhere('a.appointmentdate >= :val')
+            ->setParameter('val', $value)
             ->orderBy('a.appointmentdate', 'ASC')
             ;
 

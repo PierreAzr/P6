@@ -138,48 +138,48 @@ $(document).ready(function() {
     <link rel='stylesheet' href='https://api.mapbox.com/mapbox-gl-js/plugins/mapbox-gl-geocoder/v2.2.0/mapbox-gl-geocoder.css' type='text/css' />
 
         <script>
-        // mapboxgl.accessToken = '{{mapbox_token}}';
-        // var map = new mapboxgl.Map({
-        // container: 'map',
-        // center: [2.35, 46.11],
-        // zoom: 5,
-        // style: 'mapbox://styles/mapbox/streets-v10'
-        // });
-        // map.addControl(new MapboxGeocoder({
-        //     accessToken: mapboxgl.accessToken,
-        //     // limit results to rance
-        //     country: 'fr',
-        //     language: 'fr',
-        //
-        // }));
-        //
-        // //controle + -
-        // //options.showCompassBoolean(false) surpime le compat
-        // var nav = new mapboxgl.NavigationControl({showCompass:false});
-        // map.addControl(nav, 'top-left');
-        // //suppression du zoom
-        // map.scrollZoom.disable();
-        //
-        //
-        // var marker = new mapboxgl.Marker();
-        // map.on('click', function (e) {
-        //   marker.setLngLat([e.lngLat.lng, e.lngLat.lat]).addTo(map);
-        //   // document.getElementById('advert_ltg').value = e.lngLat.lng;
-        //   // document.getElementById('advert_lat').innerHTML = e.lngLat.lat;
-        //   document.getElementById('advert_lat').setAttribute('value', e.lngLat.lat);
-        //   document.getElementById('advert_lng').setAttribute('value', e.lngLat.lng);
-        //       //  $.ajax({url: "https://api-adresse.data.gouv.fr/reverse/?lon=2.37&lat=48.357",
-        //       //   success: function(result){
-        //       //       $("#div1").html(result);
-        //       //       console.log(result);
-        //       //   }});
-        //
-        //  });
-        //
-        //  function valider() {
-        //    if (!document.getElementById('advert_lng').value) {
-        //      document.getElementById('error').innerHTML = "Vous devez choisir un lieux en cliquant sur la carte";
-        //    }
+        mapboxgl.accessToken = '{{mapbox_token}}';
+        var map = new mapboxgl.Map({
+        container: 'map',
+        center: [2.35, 46.11],
+        zoom: 5,
+        style: 'mapbox://styles/mapbox/streets-v10'
+        });
+        map.addControl(new MapboxGeocoder({
+            accessToken: mapboxgl.accessToken,
+            // limit results to rance
+            country: 'fr',
+            language: 'fr',
+
+        }));
+
+        //controle + -
+        //options.showCompassBoolean(false) surpime le compat
+        var nav = new mapboxgl.NavigationControl({showCompass:false});
+        map.addControl(nav, 'top-left');
+        //suppression du zoom
+        map.scrollZoom.disable();
+
+
+        var marker = new mapboxgl.Marker();
+        map.on('click', function (e) {
+          marker.setLngLat([e.lngLat.lng, e.lngLat.lat]).addTo(map);
+          // document.getElementById('advert_ltg').value = e.lngLat.lng;
+          // document.getElementById('advert_lat').innerHTML = e.lngLat.lat;
+          document.getElementById('advert_lat').setAttribute('value', e.lngLat.lat);
+          document.getElementById('advert_lng').setAttribute('value', e.lngLat.lng);
+              //  $.ajax({url: "https://api-adresse.data.gouv.fr/reverse/?lon=2.37&lat=48.357",
+              //   success: function(result){
+              //       $("#div1").html(result);
+              //       console.log(result);
+              //   }});
+
+         });
+
+         function valider() {
+           if (!document.getElementById('advert_lng').value) {
+             document.getElementById('error').innerHTML = "Vous devez choisir un lieux en cliquant sur la carte";
+           }
          }
         </script>
 

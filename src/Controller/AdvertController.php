@@ -158,6 +158,7 @@ class AdvertController extends Controller
 
     /**
      * @Route("/show/{id}", name="advert_show", methods="GET|POST")
+     * @IsGranted("ROLE_USER")
      */
     public function show(Request $request, Advert $advert): Response
     {

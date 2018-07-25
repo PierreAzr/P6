@@ -9,7 +9,9 @@ body{
 
     /*background-color: #FF9F47;*/
 
-     background-image: linear-gradient(#FE7A00, white);
+  background-color: #FFF2E6;
+
+     /*background-image: linear-gradient(#e2f3f6, white);*/
     /* background-image: linear-gradient(#eccda4, white); */
     /*background-image: linear-gradient(grey, white);*/
 
@@ -37,7 +39,17 @@ body{
   box-shadow: 0 1px 4px 0 rgba(0,0,0,0.8);
 }
 
+.userpara{
+  margin-top: 20%;
+  /*padding-bottom: 50px;*/
+  margin-bottom: 50%;
 
+  color: #17a2b8;
+  background-color: white;
+  box-shadow: 0 1px 4px 0 rgba(0,0,0,0.8);
+  border-radius: 10px;
+  padding-bottom: 20px
+}
 
 /*-------Bootsrap-------*/
 
@@ -183,6 +195,7 @@ img {
   font-size: 5rem;
   font-weight: bold;
   color: white;
+  text-shadow: black 0.1em 0.1em 0.2em
 }
 
 .textband2{
@@ -194,17 +207,23 @@ img {
 .textband2link{
   font-size: 2rem;
   font-weight: bold;
-  color: #FE7A00;
+  color: #17a2b8;
 }
+
 .textband2link:hover{
-  font-size: 2rem;
+  font-size: 2.1rem;
   font-weight: bold;
   color: #17a2b8;
   text-decoration: none;
-  opacity: 0.7;
 }
 
 .cardacc{
+  background-color: white;
+  border-radius: 20px;
+   /*opacity: 0.8;*/
+}
+
+.cardacc:hover{
   background-color: white;
   border-radius: 20px;
    opacity: 0.8;

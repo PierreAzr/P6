@@ -1,21 +1,23 @@
 {% extends 'base.html.twig' %}
 
 {% block body %}
-
-{% if sendmail %}
-    <div class="alert alert-danger">
-      Un email vous a été envoyé.
-      <a href="{{sendmail}}">change pass</a>
-    </div>
-  {% else %}
-    <div class="row justify-content-center">
-      <div class="col-md-4">
-        {{ form_start(form) }}
-        {{ form_row(form.email) }}
-        <button type="submit" class="btn btn-success">Envoyer</button>
-        {{ form_end(form) }}
+<div class="userpara">
+  {% if sendmail %}
+      <div class="alert alert-danger">
+        Un email vous a été envoyé.
+        <!-- <a href="{{sendmail}}">change pass</a> -->
       </div>
-    </div>
-  {% endif %}
+    {% else %}
+      <div class="row justify-content-center">
+        <div class="col-md-4">
+          {{ form_start(form) }}
+          {{ form_row(form.email) }}
+          <button type="submit" class="btn btn-success">Envoyer</button>
+          {{ form_end(form) }}
+        </div>
+      </div>
+    {% endif %}
+</div>
+
 
 {% endblock %}
