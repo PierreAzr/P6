@@ -40,6 +40,7 @@ body{
 }
 
 .userpara{
+  padding-top: 20px;
   margin-top: 20%;
   /*padding-bottom: 50px;*/
   margin-bottom: 50%;
@@ -165,7 +166,7 @@ img {
 }
 
 .footer{
-  background-color:dimgray;
+  background-color:#027e92;
   height: 60px;
   color: white;
   font-size: 1,5rem;
@@ -178,12 +179,12 @@ img {
 }
 .linkfooter:hover{
   text-decoration: none;
-  color: #FE7A00 !important;
+  color: #17a2b8 !important;
 }
 
 /*-------Acceuil-------*/
 .band1{
-  background-image: url("img/8.jpeg");
+  background-image: url("img/12.jpg");
   background-position: center;
   background-repeat: no-repeat;
   background-size: cover;
@@ -220,7 +221,12 @@ img {
 .cardacc{
   background-color: white;
   border-radius: 20px;
-   /*opacity: 0.8;*/
+  padding: 6px;
+
+   /*opacity: 0.9;*/
+}
+.cardacc p{
+margin-bottom: 0px;
 }
 
 .cardacc:hover{
@@ -328,7 +334,7 @@ padding-top: 5px;
     border: 0px;
     border-bottom: 2px solid #17a2b8 !important;
     border-radius: 0px;
-    background-color: #e2f3f6;
+    /*background-color: #e2f3f6;*/
      /*margin-right: auto; */
     /* margin: 0 auto !important; */
 
@@ -354,10 +360,11 @@ ul{
   color: #17a2b8;
 }
 
+
+
 .cardhover:hover{
-text-decoration:none;
-background-color: rgba(255,255,255,0.1);
-  box-shadow: 0 1px 10px 0 rgba(0,0,0,0.5);
+text-decoration: none;
+opacity: 0.8;
 }
 
 

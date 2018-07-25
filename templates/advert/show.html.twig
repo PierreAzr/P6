@@ -54,7 +54,7 @@
 
               <div class="row">
                 <div class="col-sm-6 text-left">
-                  <p><span class="text-info font-weight-bold">Liste des participant:</span>
+                  <p><span class="text-info font-weight-bold">Liste des participants:</span>
                   {% for participant in advert.participant %}
                   {{participant.username}},
                   {% endfor %}
@@ -93,7 +93,7 @@
     <br>
     <br>
     <div class="step">
-      <h3 class="tabstep font-weight-bold text-center">Commentaire</h3>
+      <h3 class="tabstep font-weight-bold text-center">Commentaires</h3>
     </div>
 
             {% import _self as forms %}
@@ -179,11 +179,11 @@
           <div class="text-center" id="newformbutton">
             <br>
             <br>
-            <button class="btn btn-info" type="button" onclick="Response('null')" name="button">Laiser un commntaire</button>
+            <button class="btn btn-info" type="button" onclick="Response('null')" name="button">Laisser un commentaire</button>
           </div>
           {% else %}
           <div class="text-center">
-            <p>Vous devez etre connecter pour laisser un comentaire</p>
+            <p>Vous devez être connecté pour laisser un commentaire</p>
           </div>
 
           {% endif %}

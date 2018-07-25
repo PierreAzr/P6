@@ -3,19 +3,19 @@
 
 
 {% block body %}
-<br>
-<br>
+
 <div class="row justify-content-center">
-  <div class="col-md-6" style="background-color:white;">
-    <h1>Utilisateur</h1>
-    <p>{{user.username}}</p>
-    <br>
-    {% if is_granted('ROLE_ADMIN') %}
+  <div class="col-md-6 userpara text-center">
+    <!-- {% if is_granted('ROLE_ADMIN') %}
         <h2>Administation</h2>
         <a href="{{ path('admin')}}">Accéder a l'administration</a>
-    {% endif %}
+    {% endif %} -->
     <h2>Paramètres</h2>
-    <a href="{{ path('user_edit')}}">Modifier son profil</a><br>
+    <br>
+    <p>Votre email: <b>{{user.email}}</b></p>
+    <p>Votre Pseudo: <b>{{user.username}}</b></p>
+    <a href="{{ path('user_edit')}}">Modifier votre profil</a><br>
+    <br>
     <a href="{{ path('user_change_password')}}">Changer de mot de passe</a><br>
     <a href="{{ path('user_remove')}}">Supprimer le compte</a>
   </div>

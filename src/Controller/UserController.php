@@ -157,6 +157,7 @@ class UserController extends Controller
         $user = $this->getUser();
         $form = $this->createFormBuilder()
             ->add('password', PasswordType::class, array(
+              'label' => 'Mot de passe',        
                'constraints' => array(
                    new NotBlank(),
                    new UserPassword(['message'=>'mauvais mot de passe actuelle'])),

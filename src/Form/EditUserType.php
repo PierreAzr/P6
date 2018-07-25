@@ -19,9 +19,11 @@ class EditUserType extends AbstractType
     {
         $builder
             ->add('email', EmailType::class)
-            ->add('username', TextType::class)
+            ->add('username', TextType::class, array(
+               'label' => 'Pseudo'
+            ))
             ->add('plainpassword', PasswordType::class, array(
-              // "mapped" => false,
+              'label' => 'Mot de passe',
                'constraints' => array(
                    new UserPassword(['message'=>'mauvais mot de passe actuelle']),
                  ),

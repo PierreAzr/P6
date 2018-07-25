@@ -75,21 +75,19 @@ class SecurityController extends AbstractController
           if (!empty($user)){
 
               $token = $resetPassword->getToken();
-              $link = "http://127.0.0.1:8000/resetpass?token=$token"; //changer lien en prod (mettre en paramettre)
+              $url = $_SERVER['HTTP_HOST'].'.fr';
+              $link = "$url/resetpass?token=$token"; //changer lien en prod (mettre en paramettre)
               $resetPassword->setEmail($email);
               $em = $this->getDoctrine()->getManager();
               $em->persist($resetPassword);
               $em->flush();
-
-              // echo "cliquez sur le <a href=$link>lien</a>";
-              // exit;
 
               // Envoie email contenant le lien
               $resetpasswordmailer->sendMail($resetPassword, $link);
 
 
               return $this->render('Security/resetpassmailer.html.twig', [
-                  'sendmail' => "$link" //pendant le dev
+                   'sendmail' => 'yes'
               ]);
           }
 

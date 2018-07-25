@@ -20,7 +20,6 @@ protected $twig;
   // Méthode pour envoyer l'email
   public function SendMail(UserRegisterEvent $event)
   {
-    $user = $event->getUser();
 
     // on récupére la mise en forme de l'email
     $content = $this->twig->render(
@@ -30,11 +29,11 @@ protected $twig;
 
     // on récupere l'email du destinataire
     $email = $event->getUser()->getEmail();
-    $emailsite = $this->container->getParameter('mail_site');
+    //$emailsite = $this->getParameter('mail_site');
     $message =  (new \Swift_Message())
       ->setSubject('Olikin')
       ->setTo($user->getEmail())
-      ->setFrom($emailsite , 'Olikin')
+      ->setFrom('olikin@mail.com' , 'Olikin')
       ->setBody($content, 'text/html')
       ;
 

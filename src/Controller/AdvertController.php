@@ -48,7 +48,7 @@ class AdvertController extends Controller
               if ($adverts->count() == 0) {
                 $this->addFlash(
                     'notice',
-                    'Aucun resultat pour la ville de'.$city
+                    'Aucun resultat pour la ville de '.$city
                 );
                 $adverts = $advertRepository->findbydate( $page, $nbPerPage);
               }
@@ -239,41 +239,5 @@ class AdvertController extends Controller
 
     return $this->redirectToRoute('advert_index', ['advert' => $advert]);
     }
-
-    // /**
-    //  * @Route("/{id}/edit", name="advert_edit", methods="GET|POST")
-    //  * @IsGranted("ROLE_USER")
-    //  */
-    // public function edit(Request $request, Advert $advert): Response
-    // {
-    //     $form = $this->createForm(AdvertType::class, $advert);
-    //     $form->handleRequest($request);
-    //
-    //     if ($form->isSubmitted() && $form->isValid()) {
-    //         $this->getDoctrine()->getManager()->flush();
-    //
-    //         return $this->redirectToRoute('advert_edit', ['id' => $advert->getId()]);
-    //     }
-    //
-    //     return $this->render('advert/edit.html.twig', [
-    //         'advert' => $advert,
-    //         'form' => $form->createView(),
-    //     ]);
-    // }
-
-    // /**
-    //  * @Route("/{id}", name="advert_delete", methods="DELETE")
-    //  * @IsGranted("ROLE_ADMIN")
-    //  */
-    // public function delete(Request $request, Advert $advert): Response
-    // {
-    //     if ($this->isCsrfTokenValid('delete'.$advert->getId(), $request->request->get('_token'))) {
-    //         $em = $this->getDoctrine()->getManager();
-    //         $em->remove($advert);
-    //         $em->flush();
-    //     }
-    //
-    //     return $this->redirectToRoute('advert_index');
-    // }
 
 }

@@ -29,8 +29,9 @@ class ContactController extends Controller
             array('contact' => $contact
             ));
 
-          $emailsite = $this->container->getParameter('mail_site');
-          $message =  \Swift_Message::newInstance($object)
+          $emailsite = $this->container->getParameter('mail_contact');
+
+          $message = (new \Swift_Message($object))
             ->setTo($emailsite)
             ->setFrom($email,'Contact | Olikin')
             ->setBody($content, 'text/html')
