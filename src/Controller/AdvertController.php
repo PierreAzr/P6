@@ -69,7 +69,7 @@ class AdvertController extends Controller
         'page' => $page,
         'form' => $form->createView(),
       ));
-        // return $this->render('advert/index.html.twig', ['adverts' => $advertRepository->findAll()]);
+
     }
 
     //Pour l'autocompletion du champ recherche utilisateur
@@ -88,16 +88,6 @@ class AdvertController extends Controller
       }
   }
 
-    // /**
-    //  * @Route("/city/{city}/{page}", name="advert_city", methods="GET")
-    //  */
-    // public function cityshow($page = 1 ,Request $request, AdvertRepository $advertRepository): Response
-    // {
-    //   $city = $request->get('city');
-    //   $d = $advertRepository->findbycity($city);
-    //
-    //   return $this->render('advert/index.html.twig', ['adverts' => $d, 'city' => $city ]);
-    // }
 
     /**
      * @Route("/new", name="advert_new", methods="GET|POST")
@@ -230,9 +220,7 @@ class AdvertController extends Controller
       $em->flush();
 
         if ($advert->getParticipant()->isEmpty()) {
-          // foreach ($advert->getComments() as $value) {
-          //   $advert->removeComment($value);
-          // }
+
           $em->remove($advert);
           $em->flush();
         }
