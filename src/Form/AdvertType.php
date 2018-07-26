@@ -33,7 +33,7 @@ class AdvertType extends AbstractType
             ->add('time', TimeType::class, array(
               'widget' => 'choice',
               'minutes' => [0,10,20,30,40,50],
-              'mapped' => false,
+              // 'mapped' => false,
               'label' => "Durée de la Session"
             ))
             ->add('date', DateType::class, array(
