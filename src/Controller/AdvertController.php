@@ -110,8 +110,19 @@ class AdvertController extends Controller
           //appel api https://api-adresse.data.gouv.fr
           $lng = round($form->get('lng')->getData(), 2);
           $lat = round($form->get('lat')->getData(), 2);
-          $url = "https://api-adresse.data.gouv.fr/reverse/?lon=".$lng."&lat=".$lat;
+          if ($lng == 0 && $lat == 0) {
 
+            $this->addFlash(
+                'notice',
+                'Vous devez choisir un lieux en cliquant sur la carte'
+            );
+            return $this->render('advert/new.html.twig', [
+                'advert' => $advert,
+                'form' => $form->createView(),
+            ]);
+          }
+
+          $url = "https://api-adresse.data.gouv.fr/reverse/?lon=".$lng."&lat=".$lat;
           $raw = @file_get_contents($url);
           $json = json_decode($raw);
               //test si erreur 404 ou conversion coordonée

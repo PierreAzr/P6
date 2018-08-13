@@ -20,7 +20,7 @@
 
 
 <div class="col-md-12 col-lg-10 offset-lg-1 text-info font-weight-bold advert-show">
-    {{ form_start(form) }}
+    {{ form_start(form, {'attr':{'onsubmit':'return valider(this)'}}) }}
   <div class="row">
     <div class="col-md-12 col-lg-12 col-xl-6">
       <div class="row">
@@ -98,7 +98,7 @@
       <div class="row">
         <div class="col-md-12">
           <div class="text-center">
-            <button class="btn btn-info" onclick="valider()">{{ button_label|default('Envoyer') }}</button>
+            <button class="btn btn-info">{{ button_label|default('Envoyer') }}</button>
           </div>
         </div>
       </div>
@@ -181,6 +181,9 @@ $(document).ready(function() {
          function valider() {
            if (!document.getElementById('advert_lng').value) {
              document.getElementById('error').innerHTML = "Vous devez choisir un lieux en cliquant sur la carte";
+             return false;
+           }else {
+             return true;
            }
          }
         </script>

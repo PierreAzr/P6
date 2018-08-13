@@ -21,10 +21,11 @@ protected $twig;
   public function SendMail(UserRegisterEvent $event)
   {
 
+
     // on récupére la mise en forme de l'email
     $content = $this->twig->render(
                 'Mail/userregister.html.twig',
-                array('user' => $user
+                array('user' => $event->getUser()
                 ));
 
     // on récupere l'email du destinataire
@@ -32,7 +33,7 @@ protected $twig;
     //$emailsite = $this->getParameter('mail_site');
     $message =  (new \Swift_Message())
       ->setSubject('Olikin')
-      ->setTo($user->getEmail())
+      ->setTo($email)
       ->setFrom('olikin@mail.com' , 'Olikin')
       ->setBody($content, 'text/html')
       ;
